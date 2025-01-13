@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    
+
+    <script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"> </script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_redirect_v2.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_form.js"></script>
+    <style>
+    
+
+/* 공통 스타일 */
+body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 메뉴 바의 기본 스타일 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar3 {
+            background-color: #f44336;
+        }
+
+        /* 템플릿 수정 메뉴 스타일 */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* 드롭다운 메뉴 활성화 */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* 메뉴 항목에 마우스를 올릴 때 효과 */
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .applicant-list {
+            margin-top: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .applicant-list li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .applicant-list h3 {
+            margin: 0;
+        }
+
+        .applicant-list p {
+            margin: 5px 0;
+        }
+    </style>
+
+</head>
+<body>
+    <!--지원자 목록-->
+    <div id="applicantList">
+        <h2>역할과 기수를 선택해 주세요</h2>
+        
+         <!-- 검색 필드와 년도 선택 -->
+    <div class="search-bar">
+        <label for="roleSelect">역할:</label>
+        <select id="roleSelect">
+            <option value="참가자">참가자</option>
+            <option value="감시자">감시자</option>
+            <!-- 추가 년도 옵션을 필요에 맞게 추가 -->
+        </select>
+        <label for="yearSelect">기수:</label>
+        <select id="yearSelect">
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+            <!-- 추가 년도 옵션을 필요에 맞게 추가 -->
+        </select>
+        
+        <button onclick="searchApplicants()">검색</button>
+    </div>
+        
+    <!--지원자들을 가지고 온다.-->
+    <ul id="applicantListContainer" class="applicant-list"></ul>
+    <script>        
+            // 검색 버튼을 눌렀을 때 실행되는 함수
+    function searchApplicants() {
+        const searchQuery = document.getElementById('roleSelect').value.trim(); // 검색어
+        const year = document.getElementById('yearSelect').value; // 선택된 년도
+
+        const listContainer = document.getElementById('applicantListContainer');
+        listContainer.innerHTML = "<li class='loading'>검색 중...</li>"; // 검색 중 메시지
+        
+        function getCookie(name) {
+const matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\/\\+^])/g, '\\$1') + "=([^;]*)"
+));
+return matches ? matches[1] : undefined;
+}
+
+
+
+        // fetch 요청 보내기
+        fetch('https://kr-api.eformsign.com/v2.0/api/list_document?include_fields=true', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + getCookie('access_token'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "type": "04",
+                "title": searchQuery + "_신청서 " + year,
+                "limit": "100",
+                "skip": "0"
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('네트워크 응답에 문제가 있습니다.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // 응답 데이터를 받아서 목록으로 출력
+            const applicants = data.documents; // 응답 데이터의 배열을 가정
+            
+            // 기존 내용 지우고 새 목록을 추가
+            listContainer.innerHTML = '';
+            
+            // 응답 데이터를 목록으로 표시
+            if (applicants.length === 0) {
+                listContainer.innerHTML = "<li>검색 결과가 없습니다.</li>";
+            } else {
+                applicants.forEach(applicant => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <h3>${applicant.document_name}</h3>
+                        <p>이름: ${applicant.fields[6].value}</p>
+                        <p>나이: ${applicant.fields[2].value}</p>
+                        <p>핸드폰: ${applicant.fields[3].value}</p>
+                        <p>이메일: ${applicant.fields[4].value}</p>
+                        <p>주소: ${applicant.fields[1].value}</p>
+                        <input type="checkbox" class="view-details-checkbox" name="${applicant.fields[6].value}" year = "${year}" phone = "${applicant.fields[3].value}" email = "${applicant.fields[4].value}">
+                    `;
+                    
+                    listContainer.appendChild(listItem);
+                });
+            }
+        })
+        .catch(error => {
+            // 오류 처리
+            document.getElementById('applicantListContainer').innerHTML = "<li>오류가 발생했습니다. 다시 시도해주세요.</li>";
+            console.error('fetch 오류:', error);
+        });
+    }
+
+    </script>
+    <p>
+    초대 장소: <input type="text" id="address" placeholder="초대 장소를 입력하세요.">
+    </p>
+    <p>
+    초대 날짜: <input type="text" id="time" placeholder="초대 날짜를 입력하세요.">
+    </p>
+    <p>
+    파티 준비물: <input type="text" id="need" placeholder="파티 준비물을 입력하세요.">
+    </p>
+
+   <button id="submit-btn">초대장 전송</button>
+   
+   <script>
+        // '제출' 버튼 클릭 시 선택된 체크박스의 document_id를 모으기
+        document.getElementById('submit-btn').addEventListener('click', function() {
+          let selectedIds = [];
+          
+          // 모든 체크박스 요소를 찾아 선택된 것만 모은다
+document.querySelectorAll('.view-details-checkbox:checked').forEach(function(checkbox) {
+  const selectedId = {
+    name: checkbox.getAttribute('name'),
+    year: checkbox.getAttribute('year'),
+    phone: checkbox.getAttribute('phone'),
+    email: checkbox.getAttribute('email'),
+  };
+  
+  selectedIds.push(selectedId);
+});
+          
+          // 결과 출력 (선택된 document_id 목록)
+          console.log(selectedIds);
+          const requestData = {
+            documents: selectedIds.map(selectId => ({
+                fields: [
+                    {
+                        id: "need",
+                        value: document.getElementById('need').value
+                    },
+                    {
+                        id: "to",
+                        value: selectId.name
+                    },
+                    {
+                        id: "address",
+                        value: document.getElementById('address').value
+                    },
+                    {
+                        id: "phone",
+                        value: selectId.phone
+                    }
+                    ,
+                    {
+                        id: "time",
+                        value: document.getElementById('time').value
+                    }
+                ],
+                recipients: [
+                    {
+                    step_type : "01",
+                    member: {
+                        name: selectId.name,
+                        id: selectId.email,
+                        sms: {
+                            country_code: "+82",
+                            phone_number: selectId.phone
+                        }
+                    }
+                } 
+                ]
+    }))
+};
+
+          
+        //여기에 fetch 전송 보내는거 하장
+        function getCookie(name) {
+const matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\/\\+^])/g, '\\$1') + "=([^;]*)"
+));
+return matches ? matches[1] : undefined;
+}
+           // fetch 요청 보내기
+           const url = new URL('https://kr-api.eformsign.com/v2.0/api/forms/mass_documents');
+           url.searchParams.append('template_id', '3b3da14b003847f9b7805d54ff45d6ef');
+
+           fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('access_token'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    alert('초대 대상을 선택했는지 혹은 입력값들을 모두 입력했는지 확인해주세요.')
+                    throw new Error('네트워크 응답에 문제가 있습니다. ');
+                }
+                alert('초대장을 성공적으로 발송했습니다.')
+                return response.json();
+            })
+            
+
+          // 필요에 따라 서버로 보내거나 다른 동작을 추가할 수 있음.
+        });
+      </script>
+
+</div>
+    </div>
+</body>

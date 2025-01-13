@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+         /* 전체 페이지 높이를 100%로 설정 */
+         html, body {
+            height: 100%; /* 전체 화면 높이 */
+            margin: 0; /* 기본 마진 제거 */
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex; /* flexbox로 설정 */
+            flex-direction: column; /* 세로 방향으로 정렬 */
+            height: 100vh; /* 화면 높이를 전체 화면으로 설정 */
+        }
+        .content {
+            display: none;  /* 처음에는 모든 콘텐츠를 숨김 */
+        }
+        /* 공통 스타일 */
+       
+
+        /* 메뉴 바의 기본 스타일 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar3 {
+            background-color: #f44336;
+        }
+
+        /* 템플릿 수정 메뉴 스타일 */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* 드롭다운 메뉴 활성화 */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* 메뉴 항목에 마우스를 올릴 때 효과 */
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+         /* 수정 내용 영역 스타일 */
+         .edit-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+        }
+
+        .active {
+            display: block;
+        }
+        .applicant-list {
+            margin-top: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .applicant-list li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .applicant-list h3 {
+            margin: 0;
+        }
+
+        .applicant-list p {
+            margin: 5px 0;
+        }
+        /* 모달 스타일 */
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0); /* 반투명 배경 */
+    background-color: rgba(0, 0, 0, 0.4); /* 배경색 반투명 */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 1200px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* 스타일 설정: 선택 창 아래의 콘텐츠 영역 */
+.dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover { background-color: #f1f1f1; }
+
+        
+         /* 콘텐츠 영역 */
+         .contentA {
+            flex-grow: 1; /* 나머지 공간을 차지하도록 설정 */
+            padding: 20px;
+            background-color: #f4f4f4;
+            overflow-y: auto; /* 콘텐츠가 넘칠 경우 스크롤 */
+            
+        }
+        iframe {
+            width: 100%;  /* iframe 크기 조정 */
+            height: 100%;  /* 부모 요소의 높이에 맞추기 */
+            border: none;  /* iframe의 경계선 없애기 */
+        }
+    </style>
+    <script>
+        function getCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\/\\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? matches[1] : undefined;
+}
+// 폴링할 서버 URL
+   
+// 5초마다 서버에 요청을 보내는 폴링 예시
+setInterval(async () => {
+    try {
+        const url = new URL('https://kr-api.eformsign.com/v2.0/api_auth/refresh_token');
+        url.searchParams.append('refresh_token', getCookie('refresh_token'));
+    const response = await axios.post(url,{},{
+        headers: {
+                    'Authorization': 'Bearer ' + getCookie('access_token'),
+                    'Content-Type': 'application/json',
+                }
+    });
+    document.cookie = `access_token=${response.data.oauth_token.access_token}; path=/`;
+
+                    // 쿠키에 리프레시 토큰 저장 (Secure, HttpOnly, SameSite 설정)
+    document.cookie = `refresh_token=${response.data.oauth_token.refresh_token}; path=/`;
+
+    console.log('서버 응답:', response.data); // 서버로부터 받은 응답 데이터 출력
+  } catch (error) {
+    console.error('서버 요청 중 오류:', error);
+  }
+}, 100000);  // 10000ms = 10초
+
+
+        </script>
+</head>
+<body>
+    <h1 style="text-align: center">관리자 홈페이지</h1>
+    <!-- 세 번째 메뉴 바 -->
+    <div class="navbar navbar3">
+        <div class="dropdown">
+            <a href="javascript:void(0)" onclick="loadContent('applicantList')">지원자 목록</a>
+        </div>
+        <a href="javascript:void(0)" onclick="loadContent('batch')">일괄 전송</a>
+        <div class="dropdown">
+            <a href="#">템플릿 수정</a>
+            <div class="dropdown-content">
+                <a href="javascript:void(0)" onclick="loadContent('supportForm')">지원서 수정</a>
+                <a href="javascript:void(0)" onclick="loadContent('invitationCard')">초대장 수정</a>
+            </div>
+        </div>
+    </div>
+    <!-- 콘텐츠 영역 -->
+    <div id="contentArea" class="contentA"></div>
+
+    
+    <script>
+        // 링크 업데이트 함수
+        function loadContent(section) {
+            let contentArea = document.getElementById("contentArea");
+
+    // contentArea를 먼저 비우기
+    contentArea.innerHTML = ''; //
+
+            let htmlFile = ""; // 로드할 외부 HTML 파일 경로를 설정
+
+            switch (section) {
+                case 'applicantList':
+                    htmlFile = "../applicant.html"; // 외부 HTML 파일 경로
+                    break;
+                case 'batch':
+                    htmlFile = "../batch.html"; // 외부 HTML 파일 경로
+                    break;
+                case 'supportForm':
+                    htmlFile = "../updateApply.html"; // 외부 HTML 파일 경로
+                    break;
+                case 'invitationCard':
+                    htmlFile = "../updateParty.html"; // 외부 HTML 파일 경로
+                    break;
+                default:
+                    contentArea.innerHTML = "<p>잘못된 섹션입니다.</p>";
+                    return;
+            }
+             // iframe을 만들어서 외부 HTML을 로드
+    let iframe = document.createElement('iframe');
+    iframe.src = htmlFile;
+    contentArea.appendChild(iframe);  // contentArea에 iframe 추가
+  
+
+                    // 삽입된 스크립트 태그를 찾아서 실행
+                    
+        }
+    </script>
+</body>
+</html>
+<!--이제 여기에 뭐둘지 생각해보장 음..............-->
+<!--지원서 수정이랑 초대장 수정 대충 해놓고-->
+<!--참여자 에서 음 문서 다 가져오는거 하고 일괄 전송버튼 만들장-->

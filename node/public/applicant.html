@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_form.js"></script>
+
+    <script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"> </script>
+
+<script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+
+<script src="https://www.eformsign.com/lib/js/efs_redirect_v2.js"></script>
+    
+
+    <style>
+
+        /* 공통 스타일 */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 메뉴 바의 기본 스타일 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar3 {
+            background-color: #f44336;
+        }
+
+        /* 템플릿 수정 메뉴 스타일 */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* 드롭다운 메뉴 활성화 */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* 메뉴 항목에 마우스를 올릴 때 효과 */
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+         /* 수정 내용 영역 스타일 */
+         .edit-section {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+        }
+
+        .active {
+            display: block;
+        }
+        .applicant-list {
+            margin-top: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .applicant-list li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .applicant-list h3 {
+            margin: 0;
+        }
+
+        .applicant-list p {
+            margin: 5px 0;
+        }
+        /* 모달 스타일 */
+.modal {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0); /* 반투명 배경 */
+    background-color: rgba(0, 0, 0, 0.4); /* 배경색 반투명 */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 1200px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* 스타일 설정: 선택 창 아래의 콘텐츠 영역 */
+.dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover { background-color: #f1f1f1; }
+
+        /* 선택 창 아래 표시될 내용 영역 */
+        #contentArea {
+            margin-top: 20px;
+        }
+   
+    </style>
+</head>
+<body>
+
+    <!--지원자 목록-->
+    <div id="applicantList">
+        <h2>역할과 기수를 선택해 주세요</h2>
+        
+         <!-- 검색 필드와 년도 선택 -->
+    <div class="search-bar">
+        <label for="roleSelect">역할:</label>
+        <select id="roleSelect">
+            <option value="참가자">참가자</option>
+            <option value="감시자">감시자</option>
+            <!-- 추가 년도 옵션을 필요에 맞게 추가 -->
+        </select>
+        <label for="yearSelect">기수:</label>
+        <select id="yearSelect">
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+            <!-- 추가 년도 옵션을 필요에 맞게 추가 -->
+        </select>
+        
+        <button onclick="searchApplicants()">검색</button>
+    </div>
+        
+    <!--지원자들을 가지고 온다.-->
+        <ul id="applicantListContainer" class="applicant-list"></ul>
+        <script>        
+                // 검색 버튼을 눌렀을 때 실행되는 함수
+        function searchApplicants() {
+            const searchQuery = document.getElementById('roleSelect').value.trim(); // 검색어
+            const year = document.getElementById('yearSelect').value; // 선택된 년도
+
+            const listContainer = document.getElementById('applicantListContainer');
+            listContainer.innerHTML = "<li class='loading'>검색 중...</li>"; // 검색 중 메시지
+            
+            function getCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\/\\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? matches[1] : undefined;
+}
+
+
+        
+            // fetch 요청 보내기
+            fetch('https://kr-api.eformsign.com/v2.0/api/list_document?include_fields=true', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie('access_token'),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "type": "04",
+                    "title": searchQuery + "_신청서 " + year,
+                    "limit": "100",
+                    "skip": "0"
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('네트워크 응답에 문제가 있습니다.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 응답 데이터를 받아서 목록으로 출력
+                const applicants = data.documents; // 응답 데이터의 배열을 가정
+                
+                // 기존 내용 지우고 새 목록을 추가
+                listContainer.innerHTML = '';
+                
+                // 응답 데이터를 목록으로 표시
+                if (applicants.length === 0) {
+                    listContainer.innerHTML = "<li>검색 결과가 없습니다.</li>";
+                } else {
+                    applicants.forEach(applicant => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <h3>${applicant.document_name}</h3>
+                            <p>이름: ${applicant.fields[6].value}</p>
+                            <p>나이: ${applicant.fields[2].value}</p>
+                            <p>핸드폰: ${applicant.fields[3].value}</p>
+                            <p>이메일: ${applicant.fields[4].value}</p>
+                            <p>주소: ${applicant.fields[1].value}</p>
+                            <button class="view-details-btn" template_id = "${applicant.template.id}" document_id="${applicant.id}">상세보기</button>
+                        `;
+                        // 문서 ID를 클릭하면 세부 정보를 모달로 표시
+                    // 버튼 클릭 시 document_id를 추출하여 showDocumentDetails 함수 호출
+        listItem.querySelector('.view-details-btn').addEventListener('click', function(event) {
+        const templateId = event.target.getAttribute('template_id');
+        const documentId = event.target.getAttribute('document_id');
+        showDocumentDetails(templateId, documentId);
+    });
+
+    listContainer.appendChild(listItem);
+                        listContainer.appendChild(listItem);
+                    });
+                }
+            })
+            .catch(error => {
+                // 오류 처리
+                document.getElementById('applicantListContainer').innerHTML = "<li>오류가 발생했습니다. 다시 시도해주세요.</li>";
+                console.error('fetch 오류:', error);
+            });
+        }
+        </script>
+
+    </div>
+    <!-- 모달 -->
+<div id="documentModal" class="modal">
+    <div class="modal-content" id="modalContent">
+        <span class="close-btn">&times;</span>
+        <iframe id="eformsign_iframe3" name="eformsign_iframe3" style="width: 1200px; height: 1400px;"></iframe>
+        
+    </div>
+</div>
+
+<!--여기는 모달 부분이다.-->
+
+<script>
+var modal = document.getElementById("documentModal");
+var modalContent = document.getElementById("modalContent");
+var closeBtn = document.querySelector(".close-btn");
+var document_id = null;
+//모달컨텐트가 null이라서 오류이다.
+// 모달 닫기
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+// 문서 목록 항목을 클릭했을 때 모달을 표시하는 함수
+function showDocumentDetails(templateId, documentId) {
+    // 문서 ID를 통해 문서 세부 정보 가져오기
+            var eformsign3 = new EformSignDocument();
+
+            function getCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\/\\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? matches[1] : undefined;
+}
+            
+            
+            var document_option3 = {
+           "company" : {
+              "id" : "6a35997971eb45169d687053fad9180a",            // Company ID 입력
+              "country_code" : "kr",  // 국가 코드 입력 (ex: kr)
+              "user_key": "test1@forcs.com"        // 임베딩한 고객 측 시스템에 로그인한 사용자의 unique key. 
+           },
+           "user" : {
+                "type" : "01" ,         // 사용자 구분 (01: 멤버, 02: 외부자)
+                "id": "test1@forcs.com", // 사용자 ID(이메일)
+                "access_token" : getCookie('accessToken'),    // Access Token 입력 (eformsign API 사용하기 - Access Token 발급 참조)
+                "refresh_token" : getCookie('refreshToken'),   // Refresh Token 입력 (eformsign API 사용하기 - Access Token 발급 참조)
+
+            },
+            "mode" : {
+                "type" : "03",      // 모드 (01: 새 문서 작성, 02: 문서 처리, 03: 문서 미리보기)
+                "template_id" : templateId, // template id 입력
+                "document_id" : documentId  // document_id 입력
+                // "template_id" : "ca0475892a454705b6bf281e1d35ba1b", // template id 입력
+                // "document_id" : "3ee3c443b07f468eab328e60300bb410"  // document_id 입력
+                
+            },//
+            "layout" : {
+                "lang_code" : "ko" // 이폼사인 언어. ko, en, ja
+            },
+        };
+        
+        //callback option
+        var success_callback3 = function(response){
+            console.log(response.code);
+            if( response.code == "-1"){
+                //문서 작성 성공
+                console.log(response.document_id);
+                // return_fields에 넘긴 데이터를 조회 가능함. fields는 폼을 작성할 때 만든 입력 컴포넌트의 id를 의미함.
+                console.log(response.field_values["company_name"]);
+                console.log(response.field_values["position"]);
+            }
+        };
+        
+        var error_callback3 = function(response){
+            console.log(response.code);
+            //문서 작성 실패
+            alert(response.message);
+        };
+        
+        
+        var action_callback3 = function (response) {
+            console.table(response.data);
+        };
+        
+            eformsign3.document(document_option3, "eformsign_iframe3", success_callback3, error_callback3, action_callback3);
+            eformsign3.open();
+                
+               
+            
+            // 모달 표시
+            modal.style.display = "block";
+            console.log("1: " + documentId)
+            console.log("1: " + templateId)
+        
+}
+
+// 모달 외부를 클릭하면 모달을 닫기
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+</body>
+</html>
+<!--이제 여기에 뭐둘지 생각해보장 음..............-->
+<!--지원서 수정이랑 초대장 수정 대충 해놓고-->
+<!--참여자 에서 음 문서 다 가져오는거 하고 일괄 전송버튼 만들장-->

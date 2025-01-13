@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;  /* 본문 내 모든 텍스트와 요소를 중앙 정렬 */
+        }
+        img {
+            width: 30%;
+            height: auto;
+            margin: 0 25px; 
+        }
+        .content {
+            display: none;  /* 처음에는 모든 콘텐츠를 숨김 */
+        }
+         /* 모달 스타일 */
+         .modal {
+            display: none; /* 기본적으로 모달을 숨김 */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* 배경 색상 */
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+  
+    <script src="https://www.eformsign.com/lib/js/efs_redirect_v2.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_form.js"></script>
+
+    <!-- <script src="https://www.eformsign.com/lib/js/efs_embeddedBulkDoc_v3.js"></script> -->
+    
+</head>
+<!--이부분 걍 이케해도 되낭...?-->
+<script>
+    const ws = new WebSocket("wss://3365-218-36-12-125.ngrok-free.app/socket")
+
+    ws.onmessage = (event) =>{
+        alert(JSON.parse(event.data));
+    };
+</script>
+
+<body>
+    <h1>오징어 게임 지원 홈페이지</h1>
+    <div class="image-container">
+        <img src="/176509940-영화-오징어-게임의-명함-원-삼각형-사각.jpg" alt="사진 조회 안됌" id="left-image">
+
+        <img src="/176509940-영화-오징어-게임의-명함-원-삼각형-사각형.jpg" alt="사진 조회 안됌" id="right-image">
+
+    </div>
+    <hr>
+    <div id="left-body" class="content">
+    
+        <p>
+            <iframe src="https://www.eformsign.com/?s=cPnqz" width="1500" height="1400"></iframe>
+        </p>
+    </div>
+
+    <div id="right-body" class="content">
+        <img src="/화면_캡처_2024-12-31_104723-removebg-preview (1).png" alt="사진 조회 안됌">
+        <p>1. 어떤 감시자를 선택하시겠습니까?</p>
+        <select id = "role"class="form-select" aria-label="Default select example">
+            <option value = "1"selected>동그라미</option>
+            <option value="2">세모</option>
+            <option value="3">네모</option>
+        </select>
+        <!-- 이름 입력 칸 -->
+        <p>2. 한글이름을 입력해 주세요.</p>
+<div class="mb-3">
+    <label for="nameInput" class="form-label">이름</label>
+    <input id = "korean"type="text" class="form-control" placeholder="이름을 입력해주세요">
+</div>
+<!-- 이름 입력 칸 -->
+<p>3. 영어 이름을 입력해 주세요.</p>
+<div class="mb-3">
+    <label for="nameInput" class="form-label">이름</label>
+    <input type="text" class="form-control" id="english" placeholder="이름을 입력해주세요">
+</div>
+<p>4. 게임 중, 규칙을 위반한 참가자를 발견하였을대 가장 먼저 해야할 일은 무엇인가요?</p>
+<select id = "ruleBreak"class="form-select" aria-label="Default select example">
+    <option value = "1"selected>즉시 경고를 주고 규칙을 설명한다.</option>
+    <option value="2">즉시 처벌을 내린다.</option>
+    <option value="3">다른 감시자에게 상황을 알리고, 함께 해결 방법을 논의한다.</option>
+</select>
+
+        <p>5. 오징어게임에 참여한 경험이 있습니까?</p>
+        <select id = "experience" class="form-select" aria-label="Default select example">
+            <option value = "1"selected>처음입니다.</option>
+            <option value="2">참가자로 참여한 경험이 있습니다.</option>
+            <option value="3">감시자로 참여한 경험이 있습니다.</option>
+        </select>
+        
+        <!-- 이메일 입력 칸 -->
+        <p>6. 이메일을 입력해주세요.</p>
+    <div class="mb-3">
+        <label for="emailInput" class="form-label">이메일</label>
+        <input type="email" class="form-control" id="email" placeholder="이메일을 입력해주세요">
+    </div>
+
+        <!-- 전화번호 입력 칸 -->
+    <p>7. 전화번호를 입력해주세요.</p>
+    <div class="mb-3">
+        <label for="phoneInput" class="form-label">전화번호</label>
+        <input type="tel" class="form-control" id="phone" placeholder="전화번호를 입력해주세요" pattern="[0-9]{3}[0-9]{3,4}[0-9]{4}">
+    </div>
+        <p>8. 왜 감시자 역할에 지원하게 되었나요? 지원동기를 작성해주세요.</p>
+        <div class="mb-3">
+            <textarea class="form-control" id="why" rows="3"></textarea>
+        </div>
+        <p>9. 자신의 강점과 단점에 대해 설명해주세요.</p>
+        <div class="mb-3">
+            <textarea class="form-control" id="goodbad" rows="3"></textarea>
+        </div>
+        <p>10. 만약 오징어 게임에서 감시자 역할을 하게 된다면, 어떤 방식으로 참가자들을 통제할 것인지 상상력을 발휘해 주세요.</p>
+        <div class="mb-3">
+            <textarea class="form-control" id="control" rows="3"></textarea>
+        </div>
+        <button id = "submit-button"type="button" class="btn btn-secondary btn-lg">전송하기</button>
+    </div>
+
+    <!-- 임베딩할 iframe 생성 -->
+    <script>
+        // 왼쪽 이미지 클릭 시 왼쪽 내용 표시
+        document.getElementById("left-image").addEventListener("click", function() {
+            document.getElementById("left-body").style.display = "block";  // 왼쪽 콘텐츠 표시
+            document.getElementById("right-body").style.display = "none"; // 오른쪽 콘텐츠 숨김
+        });
+
+        // 오른쪽 이미지 클릭 시 오른쪽 내용 표시
+        document.getElementById("right-image").addEventListener("click", function() {
+            document.getElementById("right-body").style.display = "block"; // 오른쪽 콘텐츠 표시
+            document.getElementById("left-body").style.display = "none";  // 왼쪽 콘텐츠 숨김
+        });
+        document.getElementById("submit-button").addEventListener("click", function() {
+            // 사용자가 선택한 값과 입력한 텍스트 가져오기
+            const role = document.getElementById("role").value;
+            const experience = document.getElementById("experience").value;
+            const why = document.getElementById("why").value;
+            const goodbad = document.getElementById("goodbad").value;
+            const ruleBreak = document.getElementById("ruleBreak").value;
+            const english = document.getElementById("english").value;
+            const korean = document.getElementById("korean").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            // 요청을 보낼 데이터 객체 만들기
+            const requestData = {
+                "document": {
+                    "recipients": [
+      {
+        "step_type": "01"
+      }
+    ],
+                    "fields":[
+                        {
+                            "id" : "도형",
+                            "value" : role
+                        },
+                        {
+                            "id" : "규칙 위반 대처",
+                            "value" : ruleBreak
+                        },
+                        {
+                            "id" : "참가 경험ㅂ",
+                            "value" : experience
+                        },
+                        {
+                            "id" : "핸드폰",
+                            "value" : phone
+                        },
+                        {
+                            "id" : "이메일",
+                            "value" : email
+                        },
+                        {
+                            "id" : "영어 이름",
+                            "value" : english
+                        },
+                        {
+                            "id" : "한글 이름",
+                            "value" : korean
+                        },
+                        {
+                            "id" : "지원 동기",
+                            "value" : why
+                        },
+                        {
+                            "id" : "강점과 단점",
+                            "value" : goodbad
+                        }
+                    ]
+                }
+
+
+            };
+            
+            const url = new URL('https://kr-api.eformsign.com/v2.0/api/documents/external');
+          url.searchParams.append('template_id', '7ebf1d64c5224cae9add83325b0e476d');
+          url.searchParams.append('company_id', '6a35997971eb45169d687053fad9180a')
+            // Fetch 요청 보내기
+            fetch(url, {  // 서버 URL을 실제로 바꿔야 합니다.
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization' : 'Bearer '+'NDU5M2EzNmYtNDI1NC00OWFkLWJkN2UtODFiMjI5M2ZlZTVl'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('성공:', data);
+                alert('제출이 성공적으로 완료되었습니다.');
+            })
+            .catch(error => {
+                console.error('실패:', error);
+                alert('제출에 실패했습니다.');
+            });
+        });
+    </script>
+    <!-- 전송하는거 기능 만들어야함-->
+     <hr>
+    <!-- 관리자 페이지 바로가기 -->
+    <p id="admin-link" style="cursor:pointer; color: blue;">관리자 페이지 바로가기</p>
+
+     <!-- 모달 -->
+     <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h2>관리자 로그인</h2>
+            <form id="admin-form">
+                <label for="admin-id">아이디:</label>
+                <input type="text" id="admin-id" name="admin-id" required><br><br>
+                <label for="admin-password">비밀번호:</label>
+                <input type="password" id="admin-password" name="admin-password" required><br><br>
+                <button type="submit">로그인</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // 모달 관련 변수
+        var modal = document.getElementById("admin-modal");
+        var closeModal = document.getElementById("close-modal");
+        var adminLink = document.getElementById("admin-link");
+
+        // 관리자 페이지 바로가기 클릭 시 모달 열기
+        adminLink.addEventListener("click", function() {
+            modal.style.display = "block";  // 모달 표시
+        });
+
+        // 모달 닫기
+        closeModal.addEventListener("click", function() {
+            modal.style.display = "none";  // 모달 숨김
+        });
+
+        // 모달 외부 클릭 시 모달 닫기
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";  // 모달 숨김
+            }
+        });
+
+        // 관리자 로그인 폼 제출 시
+        document.getElementById("admin-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // 폼 제출 기본 동작 방지
+
+            // 입력값 가져오기
+            var adminId = document.getElementById("admin-id").value;
+            var adminPassword = document.getElementById("admin-password").value;
+            const timestamp = Date.now();
+            // API 요청
+            fetch('https://service.eformsign.com/v2.0/api_auth/access_token', {  // 실제 API URL로 변경해야 합니다
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':'Bearer NDU5M2EzNmYtNDI1NC00OWFkLWJkN2UtODFiMjI5M2ZlZTVl',
+                    'eformsign_signature' : 'Basic ' + btoa(adminId + ':' + adminPassword)
+                },
+                body: JSON.stringify({
+                    execution_time : timestamp,
+                    member_id : "test1@forcs.com"
+                    //이거 base64로 인코딩 해서 보내야한다.
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.api_key !=null) {
+                    // 로그인 성공 시 모달 닫기 및 admin.html 페이지로 리다이렉트
+                    // 쿠키에 엑세스 토큰 저장 (Secure, HttpOnly, SameSite 설정)
+                    document.cookie = `access_token=${data.oauth_token.access_token}; path=/`;
+
+                    // 쿠키에 리프레시 토큰 저장 (Secure, HttpOnly, SameSite 설정)
+                    document.cookie = `refresh_token=${data.oauth_token.refresh_token}; path=/`;
+                    //그리고 refreshtoken이랑 accesstoken가져와야한다.
+                   
+                    modal.style.display = "none";
+                    window.location.href = "/admin";  // 리다이렉트
+                } else if(data.code == 4010001){
+                    // 로그인 실패 시 알림
+                    alert("아이디 또는 비밀번호가 잘못되었습니다.");
+                }
+            })
+            .catch(error => {
+                console.error('로그인 오류:', error);
+                alert('서버 오류가 발생했습니다.');
+            });
+        });
+    </script>
+
+    <!--버튼 누르면 모달뜨게하고 그 모달 비밀번호 입력한다음에 맞으면 관리자 홈페이지로 가게한다. 틀리면 그냥 안가짐...-->
+
+    <!--아마 제대로 하려면 accesstoken얻게하는게 방법일듯? accesstoken얻은담에 관리자 페이지로 가고 음... 관리자 페이지에서 토큰가지고 행동하게된당-->
+    <!--그리고 그냥 폼에 접근하는애는 external token 줘야한다.-->
+
+</body>
+</html>

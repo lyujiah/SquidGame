@@ -1,0 +1,372 @@
+import { globalValue } from './data.js';
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;  /* 본문 내 모든 텍스트와 요소를 중앙 정렬 */
+        }
+        img {
+            width: 30%;
+            height: auto;
+            margin: 0 25px; 
+        }
+        .content {
+            display: none;  /* 처음에는 모든 콘텐츠를 숨김 */
+        }
+         /* 모달 스타일 */
+         .modal {
+            display: none; /* 기본적으로 모달을 숨김 */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* 배경 색상 */
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+  
+    <script src="https://www.eformsign.com/lib/js/efs_redirect_v2.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_form.js"></script>
+
+    <!-- <script src="https://www.eformsign.com/lib/js/efs_embeddedBulkDoc_v3.js"></script> -->
+
+</head>
+<body>
+    
+    <h1>오징어 게임 지원 홈페이지</h1>
+    <div class="image-container">
+        <img src="/176509940-영화-오징어-게임의-명함-원-삼각형-사각.jpg" alt="사진 조회 안됌" id="left-image">
+        <img src="/176509940-영화-오징어-게임의-명함-원-삼각형-사각형.jpg" alt="사진 조회 안됌" id="right-image">
+    </div>
+    <hr>
+    <div id="left-body" class="content">
+
+        <p>
+            <iframe id="eformsign_iframe" name="eformsign_iframe" style="width: 1200px; height: 1400px;"></iframe>
+        <script>
+    var eformsign = new EformSignDocument();
+
+    var document_option = {
+    "company" : {
+          "id" : "81048d296e2c46a9b181c901198d7c23",            // Company ID 입력
+         "country_code" : "kr",  // 국가 코드 입력 (ex: kr)
+          "user_key": "orange875321@naver.com"        // 임베딩한 고객 측 시스템에 로그인한 사용자의 unique key. 브라우저 쿠키의 이폼사인 로그인 정보와 비교
+       },
+    "user" : {
+        "type" : "01" ,         // 사용자 구분 (01: 멤버, 02: 외부자)
+        "id": "orange875321@naver.com", // 사용자 ID(이메일)
+        "access_token" : "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJlZm9ybXNpZ24uaWFtIiwiY29udGV4dCI6eyJjbGllbnRJZCI6IjY4MDk0ZWVhMjVhZjRhNjI5ZTI4ZGU5Y2ZlYzRlYmZjIiwiY2xpZW50S2V5IjoiZTNiM2IzZTUtMGEzMS00NTE1LWE5NzEtN2M4Y2FlNDI4NzZmIiwibWFuYWdlbWVudElkIjoiMzRhYWI4MDBjMmEwNDQwNThmZDRlZjc5OGFlY2RlY2EiLCJzY29wZXMiOiJzbWFydF9lZm9ybV9zY29wZSIsInR5cGUiOiJ1c2VyIiwidXNlck5hbWUiOiJvcmFuZ2U4NzUzMjFAbmF2ZXIuY29tIiwidXNlcklkIjoiYjA0MTVhNjI5NTAwNGNkM2IzYTEyODYxYTBkNmY4NzUiLCJyZWZyZXNoVG9rZW4iOiJmYTJhYjFhNC00ZGRkLTQyMmItYjlmNi1kMjg3YjBiM2JiNTEifSwiY2xhaW0iOnsiY29tcGFueV9pZCI6IjgxMDQ4ZDI5NmUyYzQ2YTliMTgxYzkwMTE5OGQ3YzIzIiwiYWNjZXNzX2tleSI6ImM0NGQ2MmNjLTUxMDctNDIxNC05MDI4LThkZjI1NDJiODNiMSIsIm1lbWJlcl9pZCI6Im9yYW5nZTg3NTMyMUBuYXZlci5jb20ifSwiZXhwIjoxNzM1NjA4NTYwLCJpYXQiOjE3MzU2MDQ5NjB9.EYhmtnKP0CS_ov-LIPMeltq4fler0AYjkwa1EB5JeYbmmIm00KLoOuGSFBVqTSNpGc1r5xfYPbtzRGRxS3B5Mb-kSz0xScKhNrIP9bhguYvFzNWmsDc7UeydkRGSlAgLhLQlpFoYiArIz2J0MPw8JA6-FfFxaSJkDkaNixwHmTY",    // Access Token 입력 (eformsign API 사용하기 - Access Token 발급 참조)
+        "refresh_token" : "fa2ab1a4-4ddd-422b-b9f6-d287b0b3bb51"  // Refresh Token 입력 (eformsign API 사용하기 - Access Token 발급 참조)
+    },
+    "mode" : {
+        "type" : "01",      // 모드 (01: 새 문서 작성, 02: 문서 처리, 03: 문서 미리보기)
+        "template_id" : "ca0475892a454705b6bf281e1d35ba1b", // template id 입력
+    },
+    "layout" : {
+        "lang_code" : "ko", // 이폼사인 언어. ko, en, ja
+        "header" : true,    // 상단바 (푸른색) 표시 여부. 미표시 시 액션 버튼을 통해 전송 등 동작 가능
+        "footer" : false,     // 하단바 (이폼사인 로고, 언어 설정 등) 표시 여부.
+        // "zoom" : "0.5",      // iframe내 컨텐츠 비율 조정
+        "viewer_toolbar" : {"toolbar.save" : "false", "toolbar.print" : "false"}  // 뷰어의 툴바 옵션 설정
+        
+    },
+    "prefill" : {
+        "document_name": "오징어게임 참가자", // 문서 제목 입력
+    //     "recipients": [
+    //         // {
+    //         //     "step_idx" : "2",       // 워크플로우 순서. 수신자가 있을 경우 2부터 시작
+    //         //     "step_type": "05",      // 단계 종류. 05: 참여자, 06: 검토자
+    //         //     "name" : '김테스트',        // 수신자 이름
+    //         //     "id": "orange875321@gmail.com", // 수신자 ID/이메일
+    //         //     "sms": "01031467136",   // 수신자 핸드폰 번호
+    //         //     "use_mail": true,       // 이메일 알림 사용 여부
+    //         //     "use_sms": true,        // SMS 알림 사용 여부
+    //         // }
+    //     ],
+    //     "comment": "여기에 코멘트 입력",        // 메시지
+    //     "is_hidden_stamp": true                 // 회사도장 워터마크 표시 여부
+    }
+    //지금 일괄 작성으로 뜬다....
+};
+
+//callback option
+var success_callback = function(response){
+    console.log("성공")
+    console.log(response.code);
+    
+    if( response.code == "-1"){
+        // //문서 작성 성공
+        console.log(response.document_id);
+        //return_fields에 넘긴 데이터를 조회 가능함. fields는 폼을 작성할 때 만든 입력 컴포넌트의 id를 의미함.
+        console.log(response.field_values["company_name"]);
+        console.log(response.field_values["position"]);
+    }
+};
+
+var error_callback = function(response){
+    console.log(response.code);
+    //문서 작성 실패
+    alert(response.message);
+    console.log("실패애")
+};
+
+
+var action_callback = function (response) {
+    console.log("지연?");
+    console.table(response.data);
+};
+
+    eformsign.document(document_option, "eformsign_iframe", success_callback, error_callback, action_callback);
+    eformsign.open();
+</script>
+        </p>
+    </div>
+
+    <div id="right-body" class="content">
+        <img src="/화면_캡처_2024-12-31_104723-removebg-preview (1).png" alt="사진 조회 안됌">
+        <p>1. 어떤 기수에 참가하시겠습니까?</p>
+        <select class="form-select" aria-label="Default select example">
+            <option value = "1"selected>2025</option>
+            <option value="2">2026</option>
+            <option value="3">2027</option>
+            <option value="4">2028</option>
+            <option value="5">2029</option>
+            <option value="6">2030</option>
+        </select>
+        <p>2. 어떤 감시자를 선택하시겠습니까?</p>
+        <select class="form-select" aria-label="Default select example">
+            <option value = "1"selected>동그라미</option>
+            <option value="2">세모</option>
+            <option value="3">네모</option>
+        </select>
+        <!-- 이름 입력 칸 -->
+        <p>3. 한글이름을 입력해 주세요.</p>
+<div class="mb-3">
+    <label for="nameInput" class="form-label">이름</label>
+    <input type="text" class="form-control" id="nameInput" placeholder="이름을 입력해주세요">
+</div>
+<!-- 이름 입력 칸 -->
+<p>4. 영어 이름을 입력해 주세요.</p>
+<div class="mb-3">
+    <label for="nameInput" class="form-label">이름</label>
+    <input type="text" class="form-control" id="nameInput" placeholder="이름을 입력해주세요">
+</div>
+<p>5. 게임 중, 규칙을 위반한 참가자를 발견하였을대 가장 먼저 해야할 일은 무엇인가요?</p>
+<select class="form-select" aria-label="Default select example">
+    <option value = "1"selected>즉시 경고를 주고 규칙을 설명한다.</option>
+    <option value="2">즉시 처벌을 내린다.</option>
+    <option value="3">다른 감시자에게 상황을 알리고, 함께 해결 방법을 논의한다.</option>
+</select>
+
+        <p>6. 오징어게임에 참여한 경험이 있습니까?</p>
+        <select class="form-select" aria-label="Default select example">
+            <option value = "1"selected>처음입니다.</option>
+            <option value="2">참가자로 참여한 경험이 있습니다.</option>
+            <option value="3">감시자로 참여한 경험이 있습니다.</option>
+        </select>
+        
+        <!-- 이메일 입력 칸 -->
+        <p>7. 전화번호를 입력해주세요.</p>
+    <div class="mb-3">
+        <label for="emailInput" class="form-label">이메일</label>
+        <input type="email" class="form-control" id="emailInput" placeholder="이메일을 입력해주세요">
+    </div>
+
+        <!-- 전화번호 입력 칸 -->
+    <p>8. 전화번호를 입력해주세요.</p>
+    <div class="mb-3">
+        <label for="phoneInput" class="form-label">전화번호</label>
+        <input type="tel" class="form-control" id="phoneInput" placeholder="전화번호를 입력해주세요" pattern="[0-9]{3}[0-9]{3,4}[0-9]{4}">
+    </div>
+        <p>9. 왜 감시자 역할에 지원하게 되었나요? 지원동기를 작성해주세요.</p>
+        <div class="mb-3">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <p>5. 자신의 강점과 단점에 대해 설명해주세요.</p>
+        <div class="mb-3">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <p>6. 만약 오징어 게임에서 감시자 역할을 하게 된다면, 어떤 방식으로 참가자들을 통제할 것인지 상상력을 발휘해 주세요.</p>
+        <div class="mb-3">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <button type="button" class="btn btn-secondary btn-lg">전송하기</button>
+    </div>
+
+    <!-- 임베딩할 iframe 생성 -->
+    <script>
+        // 왼쪽 이미지 클릭 시 왼쪽 내용 표시
+        document.getElementById("left-image").addEventListener("click", function() {
+            document.getElementById("left-body").style.display = "block";  // 왼쪽 콘텐츠 표시
+            document.getElementById("right-body").style.display = "none"; // 오른쪽 콘텐츠 숨김
+        });
+
+        // 오른쪽 이미지 클릭 시 오른쪽 내용 표시
+        document.getElementById("right-image").addEventListener("click", function() {
+            document.getElementById("right-body").style.display = "block"; // 오른쪽 콘텐츠 표시
+            document.getElementById("left-body").style.display = "none";  // 왼쪽 콘텐츠 숨김
+        });
+        document.getElementById("submit-button").addEventListener("click", function() {
+            // 사용자가 선택한 값과 입력한 텍스트 가져오기
+            const guardSelection = document.getElementById("guard-selection").value;
+            const gameExperience = document.getElementById("game-experience").value;
+            const ruleViolationAction = document.getElementById("rule-violation-action").value;
+            const motivation = document.getElementById("motivation").value;
+            const strengthsWeaknesses = document.getElementById("strengths-weaknesses").value;
+            const controlMethod = document.getElementById("control-method").value;
+
+            // 요청을 보낼 데이터 객체 만들기
+            const requestData = {
+                guardSelection: guardSelection,
+                gameExperience: gameExperience,
+                ruleViolationAction: ruleViolationAction,
+                motivation: motivation,
+                strengthsWeaknesses: strengthsWeaknesses,
+                controlMethod: controlMethod
+            };
+
+            // Fetch 요청 보내기
+            fetch('https://example.com/submit', {  // 서버 URL을 실제로 바꿔야 합니다.
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('성공:', data);
+                alert('제출이 성공적으로 완료되었습니다.');
+            })
+            .catch(error => {
+                console.error('실패:', error);
+                alert('제출에 실패했습니다.');
+            });
+        });
+    </script>
+    <!-- 전송하는거 기능 만들어야함-->
+     <hr>
+    <!-- 관리자 페이지 바로가기 -->
+    <p id="admin-link" style="cursor:pointer; color: blue;">관리자 페이지 바로가기</p>
+
+     <!-- 모달 -->
+     <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h2>관리자 로그인</h2>
+            <form id="admin-form">
+                <label for="admin-id">아이디:</label>
+                <input type="text" id="admin-id" name="admin-id" required><br><br>
+                <label for="admin-password">비밀번호:</label>
+                <input type="password" id="admin-password" name="admin-password" required><br><br>
+                <button type="submit">로그인</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // 모달 관련 변수
+        var modal = document.getElementById("admin-modal");
+        var closeModal = document.getElementById("close-modal");
+        var adminLink = document.getElementById("admin-link");
+
+        // 관리자 페이지 바로가기 클릭 시 모달 열기
+        adminLink.addEventListener("click", function() {
+            modal.style.display = "block";  // 모달 표시
+        });
+
+        // 모달 닫기
+        closeModal.addEventListener("click", function() {
+            modal.style.display = "none";  // 모달 숨김
+        });
+
+        // 모달 외부 클릭 시 모달 닫기
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";  // 모달 숨김
+            }
+        });
+
+        // 관리자 로그인 폼 제출 시
+        document.getElementById("admin-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // 폼 제출 기본 동작 방지
+
+            // 입력값 가져오기
+            var adminId = document.getElementById("admin-id").value;
+            var adminPassword = document.getElementById("admin-password").value;
+            const timestamp = Date.now();
+            // API 요청
+            fetch('https://service.eformsign.com/v2.0/api_auth/access_token', {  // 실제 API URL로 변경해야 합니다
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization':'Bearer YzQ0ZDYyY2MtNTEwNy00MjE0LTkwMjgtOGRmMjU0MmI4M2Ix',
+                    'eformsign_signature' : 'Basic ' + btoa(adminId + ':' + adminPassword)
+                },
+                body: JSON.stringify({
+                    execution_time : timestamp,
+                    member_id : "orange875321@naver.com"
+                    //이거 base64로 인코딩 해서 보내야한다.
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.api_key !=null) {
+                    // 로그인 성공 시 모달 닫기 및 admin.html 페이지로 리다이렉트
+                    // 쿠키에 엑세스 토큰 저장 (Secure, HttpOnly, SameSite 설정)
+                    document.cookie = `access_token=${data.oauth_token.access_token}; path=/`;
+
+                    // 쿠키에 리프레시 토큰 저장 (Secure, HttpOnly, SameSite 설정)
+                    document.cookie = `refresh_token=${data.oauth_token.refresh_token}; path=/`;
+                    //그리고 refreshtoken이랑 accesstoken가져와야한다.
+                    alert(document.cookie);
+                    modal.style.display = "none";
+                    window.location.href = "admin.html";  // 리다이렉트
+                } else if(data.code == 4010001){
+                    // 로그인 실패 시 알림
+                    alert("아이디 또는 비밀번호가 잘못되었습니다.");
+                }
+            })
+            .catch(error => {
+                console.error('로그인 오류:', error);
+                alert('서버 오류가 발생했습니다.');
+            });
+        });
+    </script>
+
+    <!--버튼 누르면 모달뜨게하고 그 모달 비밀번호 입력한다음에 맞으면 관리자 홈페이지로 가게한다. 틀리면 그냥 안가짐...-->
+
+    <!--아마 제대로 하려면 accesstoken얻게하는게 방법일듯? accesstoken얻은담에 관리자 페이지로 가고 음... 관리자 페이지에서 토큰가지고 행동하게된당-->
+    <!--그리고 그냥 폼에 접근하는애는 external token 줘야한다.-->
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    
+    <script src="https://www.eformsign.com/plugins/jquery/jquery.min.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_v2.js"></script>
+
+    <script src="https://www.eformsign.com/lib/js/efs_redirect.js"></script>
+    <script src="https://www.eformsign.com/lib/js/efs_embedded_form.js"></script>  
+
+    
+    </head>
+<body>
+<h3>hi</h3>
+
+<iframe id="eformsign_iframe3" name="eformsign_iframe3" style="width: 1200px; height: 1400px;"></iframe>
+<script>
+            var eformsign3 = new EformSignDocument();
+            var document_option3 = {
+           "company" : {
+              "id" : "81048d296e2c46a9b181c901198d7c23",            // Company ID 입력
+              "country_code" : "kr",  // 국가 코드 입력 (ex: kr)
+              "user_key": "orange875321@naver.com"        // 임베딩한 고객 측 시스템에 로그인한 사용자의 unique key. 브라우저 쿠키의 이폼사인 로그인 정보와 비교
+           },
+           "user" : {
+                "type" : "01" ,         // 사용자 구분 (01: 멤버, 02: 외부자)
+                "id": "orange875321@naver.com", // 사용자 ID(이메일)
+                "access_token" : "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJlZm9ybXNpZ24uaWFtIiwiY29udGV4dCI6eyJjbGllbnRJZCI6IjY4MDk0ZWVhMjVhZjRhNjI5ZTI4ZGU5Y2ZlYzRlYmZjIiwiY2xpZW50S2V5IjoiZTNiM2IzZTUtMGEzMS00NTE1LWE5NzEtN2M4Y2FlNDI4NzZmIiwibWFuYWdlbWVudElkIjoiMzRhYWI4MDBjMmEwNDQwNThmZDRlZjc5OGFlY2RlY2EiLCJzY29wZXMiOiJzbWFydF9lZm9ybV9zY29wZSIsInR5cGUiOiJ1c2VyIiwidXNlck5hbWUiOiJvcmFuZ2U4NzUzMjFAbmF2ZXIuY29tIiwidXNlcklkIjoiYjA0MTVhNjI5NTAwNGNkM2IzYTEyODYxYTBkNmY4NzUiLCJyZWZyZXNoVG9rZW4iOiJjZmE3Mzk2Mi01ZjJmLTRiOWEtOWUxNi1kNWQ0ZTA4M2RmMmQifSwiY2xhaW0iOnsiY29tcGFueV9pZCI6IjgxMDQ4ZDI5NmUyYzQ2YTliMTgxYzkwMTE5OGQ3YzIzIiwiYWNjZXNzX2tleSI6ImM0NGQ2MmNjLTUxMDctNDIxNC05MDI4LThkZjI1NDJiODNiMSIsIm1lbWJlcl9pZCI6Im9yYW5nZTg3NTMyMUBuYXZlci5jb20ifSwiZXhwIjoxNzM1ODg2Mjc3LCJpYXQiOjE3MzU4ODI2Nzd9.QIsRVF4PZ3j4QwCsZpNFkhzvdLZHTLdvQCV_peKcwevsfo7pfZPc2UQOjxWNyfo0OKip2t-kY_lyQZ9w3IzE-FkHCSVgQbgcmtwCao6m5y3G70r0Zz4JH8RykzFiM_Y4jslAY5HOsnuC49uqBcOemSU9_6rF5_R8GHPr2REY2Fg",    // Access Token 입력 (eformsign API 사용하기 - Access Token 발급 참조)
+                "refresh_token" : "cfa73962-5f2f-4b9a-9e16-d5d4e083df2d",   // Refresh Token 입력 (eformsign API 사용하기 - Access Token 발급 참조)
+
+            },
+            "mode" : {
+                "type" : "03",      // 모드 (01: 새 문서 작성, 02: 문서 처리, 03: 문서 미리보기)
+                "template_id" : "ca0475892a454705b6bf281e1d35ba1b", // template id 입력
+                "document_id" : "3ee3c443b07f468eab328e60300bb410"  // document_id 입력
+            },
+            "layout" : {
+                "lang_code" : "ko" // 이폼사인 언어. ko, en, ja
+            },
+        };
+        
+        //callback option
+        var success_callback3 = function(response){
+            console.log(response.code);
+            if( response.code == "-1"){
+                //문서 작성 성공
+                console.log(response.document_id);
+                // return_fields에 넘긴 데이터를 조회 가능함. fields는 폼을 작성할 때 만든 입력 컴포넌트의 id를 의미함.
+                console.log(response.field_values["company_name"]);
+                console.log(response.field_values["position"]);
+            }
+        };
+        
+        var error_callback3 = function(response){
+            console.log(response.code);
+            //문서 작성 실패
+            alert(response.message);
+        };
+        
+        
+        var action_callback3 = function (response) {
+            console.table(response.data);
+        };
+        
+            eformsign3.document(document_option3, "eformsign_iframe3", success_callback3, error_callback3, action_callback3);
+            eformsign3.open();
+            </script>
+
+
+<div id="supportForm" class="edit-section" >
+    <h2>지원서 수정</h2>
+    <p>여기에는 지원서를 수정할 수 있는 폼을 추가합니다.</p>
+    <iframe id="eformsign_iframe" name="eformsign_iframe" style="width: 1200px; height: 1400px;"></iframe>
+    <script>
+        var eformsign = new EformSignTemplate();
+
+        var template_option = {
+            "company" : {
+                "id" : "81048d296e2c46a9b181c901198d7c23",            // Company ID 입력
+                "country_code" : "kr",    // 국가 코드 입력 (ex: kr)
+                "user_key": "orange875321@naver.com"        // 임베딩한 고객 측 시스템에 로그인한 사용자의 unique key. 브라우저 쿠키의 이폼사인 로그인 정보와 비교
+            },
+            "user" : {
+                "id": "orange875321@naver.com",
+                "access_token" : "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJlZm9ybXNpZ24uaWFtIiwiY29udGV4dCI6eyJjbGllbnRJZCI6IjY4MDk0ZWVhMjVhZjRhNjI5ZTI4ZGU5Y2ZlYzRlYmZjIiwiY2xpZW50S2V5IjoiZTNiM2IzZTUtMGEzMS00NTE1LWE5NzEtN2M4Y2FlNDI4NzZmIiwibWFuYWdlbWVudElkIjoiMzRhYWI4MDBjMmEwNDQwNThmZDRlZjc5OGFlY2RlY2EiLCJzY29wZXMiOiJzbWFydF9lZm9ybV9zY29wZSIsInR5cGUiOiJ1c2VyIiwidXNlck5hbWUiOiJvcmFuZ2U4NzUzMjFAbmF2ZXIuY29tIiwidXNlcklkIjoiYjA0MTVhNjI5NTAwNGNkM2IzYTEyODYxYTBkNmY4NzUiLCJyZWZyZXNoVG9rZW4iOiJjZmE3Mzk2Mi01ZjJmLTRiOWEtOWUxNi1kNWQ0ZTA4M2RmMmQifSwiY2xhaW0iOnsiY29tcGFueV9pZCI6IjgxMDQ4ZDI5NmUyYzQ2YTliMTgxYzkwMTE5OGQ3YzIzIiwiYWNjZXNzX2tleSI6ImM0NGQ2MmNjLTUxMDctNDIxNC05MDI4LThkZjI1NDJiODNiMSIsIm1lbWJlcl9pZCI6Im9yYW5nZTg3NTMyMUBuYXZlci5jb20ifSwiZXhwIjoxNzM1ODg2Mjc3LCJpYXQiOjE3MzU4ODI2Nzd9.QIsRVF4PZ3j4QwCsZpNFkhzvdLZHTLdvQCV_peKcwevsfo7pfZPc2UQOjxWNyfo0OKip2t-kY_lyQZ9w3IzE-FkHCSVgQbgcmtwCao6m5y3G70r0Zz4JH8RykzFiM_Y4jslAY5HOsnuC49uqBcOemSU9_6rF5_R8GHPr2REY2Fg",    // Access Token 입력 (eformsign API 사용하기 - Access Token 발급 참조)
+                "refresh_token" : "cfa73962-5f2f-4b9a-9e16-d5d4e083df2d", 
+            },
+            "mode" : {
+                "type" : "02",      // 01 : 생성 , 02 : 수정, 03 : 복제
+                "template_id" : "ca0475892a454705b6bf281e1d35ba1b", // template id 입력
+                "template_type": "form" // form : 템플릿 관리, unstructured_form: 내 파일로 문서 작성
+            },
+            "layout" : {
+                "lang_code" : "ko", // 이폼사인 언어. ko, en, ja
+                "header" : true,    // 상단바 (푸른색) 표시 여부. 미표시 시 액션 버튼을 통해 전송 등 동작 가능
+                "footer" : true     // 하단바 (이폼사인 로고, 언어 설정 등) 표시 여부.
+            }, 
+};
+
+//callback option
+var success_callback = function (response) {
+if (response.type ==='template'){
+    console.log(response.template_id);
+    console.log(response.template_name);
+    console.table(response.step_settings);
+    if ("-1" == response.code) {
+        alert("템플릿 생성되었습니다.\n" + "- document_id : " + response.template_id + "\n- title : " + response.template_name);
+    } else {
+        alert("템플릿 생성에 실패하였습니다.\n" + "- code : " + response.code + "\n- message : " + response.message);
+    }
+}
+window.close();
+};
+
+
+var error_callback = function (response) {
+alert("템플릿 생성에 실패하였습니다.\n" + "- code : " + response.code + "\n- message : " + response.message);
+console.log(response.code);
+console.log(response.message);
+window.close();
+};
+
+var action_callback = function (response) {
+console.table(response.data);
+};
+
+eformsign.template(template_option, "eformsign_iframe", success_callback, error_callback, action_callback);
+eformsign.open();
+</script>
+</body>
